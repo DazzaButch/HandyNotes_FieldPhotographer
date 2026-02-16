@@ -1,3 +1,8 @@
+### Version 8.0.0.1
+
+Updated by Anlin@EU Lightbringer (https://github.com/DazzaButch)
+.toc & Addon.lua updated for Midnight 12.0
+
 ### Version 8.0.0.0
 
 * Updated for WoW 8.0
