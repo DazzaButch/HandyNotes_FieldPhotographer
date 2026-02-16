@@ -1,6 +1,8 @@
 HandyNotes: Field Photographer
 =================================
 
+Updated fixes for Midnight 12.0 release.
+
 **EN** — Shows you where to take selfies for the achievement.  
 **DE** — Zeigt, wo Selfies für den Erfolg zu schießen.  
 **ES** — Mostrar donde para sacar fotos para el logro.
