@@ -1,7 +1,7 @@
-### Version 8.0.0.1
+### Version 8.0.0.1 (16th Feb 2026)
 
-Updated by Anlin@EU Lightbringer (https://github.com/DazzaButch)
-.toc & Addon.lua updated for Midnight 12.0
+Updated by Anlin@EU Lightbringer (https://github.com/DazzaButch)  
+.toc & Addon.lua updated for Midnight 12.0  
 
 ### Version 8.0.0.0
 
