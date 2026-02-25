@@ -1,5 +1,5 @@
 ## Interface: 120001
-## Version: 8.0.0.1
+## Version: 8.0.0.2
 
 ## Title: HandyNotes: Field Photographer
 ## Notes: Shows you where to take selfies for the achievement.
@@ -15,7 +15,7 @@
 ## X-WoWI-ID: 23667
 
 ## Dependencies: HandyNotes
-## OptionalDependencies: TomTom
+## OptionalDeps: TomTom
 ## SavedVariables: HNFieldPhotographerDB
 ## DefaultState: enabled
 
