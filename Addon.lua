@@ -2,11 +2,7 @@
 	HandyNotes: Field Photographer
 	Shows where to take selfies for the achievement.
 	Copyright (c) 2015-2018 Phanx <addons@phanx.net>. All rights reserved.
-	https://github.com/Phanx/HandyNotes_FieldPhotographer
-	https://www.curseforge.com/wow/addons/handynotes-field-photographer
-	https://www.wowinterface.com/downloads/info23667-HandyNotesFieldPhotographer.html
 ----------------------------------------------------------------------]]
-
 local ADDON_NAME = ...
 local HandyNotes = LibStub("AceAddon-3.0"):GetAddon("HandyNotes")
 
@@ -132,6 +128,7 @@ end
 do
 	local scale, alpha
 	local function iterator(t, prev)
+		if not t then return end
 		local coord, v = next(t, prev)
 		if coord then return coord, nil, ICON, scale * 1.4, alpha end
 	end
@@ -166,11 +163,20 @@ function Addon:UPDATE_OVERRIDE_ACTIONBAR()
 	for i = 1, 40 do
 		local aura = C_UnitAuras.GetBuffDataByIndex("player", i)
 		if not aura then break end
-		if cameraBuffs[aura.name] then inCamera = true break end
+		
+		local name = aura.name
+		if name and cameraBuffs[name] then
+			inCamera = true
+			break
+		end
 	end
 	if wasInCamera ~= inCamera then
 		wasInCamera = inCamera
-		if inCamera then self:RegisterEvent("CRITERIA_UPDATE") else self:UnregisterEvent("CRITERIA_UPDATE") end
+		if inCamera then
+			self:RegisterEvent("CRITERIA_UPDATE")
+		else
+			self:UnregisterEvent("CRITERIA_UPDATE")
+		end
 	end
 end
 
@@ -182,4 +188,4 @@ function Addon:CRITERIA_UPDATE()
 		end
 	end
 	HandyNotes:SendMessage("HandyNotes_NotifyUpdate", ACHIEVEMENT_NAME)
-end
+end  
