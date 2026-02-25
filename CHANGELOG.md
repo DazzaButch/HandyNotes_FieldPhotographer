@@ -1,3 +1,8 @@
+### Version 8.0.0.2 (25th Feb 2026)
+
+Updated by Anlin@EU Lightbringer (https://github.com/DazzaButch)  
+Updated code due to bug in Wintergrasp BG 
+
 ### Version 8.0.0.1 (16th Feb 2026)
 
 Updated by Anlin@EU Lightbringer (https://github.com/DazzaButch)  
