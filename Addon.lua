@@ -78,7 +78,6 @@ local factions = { [27869] = "Horde", [27864] = "Alliance" }
 local continents = { [572] = true, [13] = true, [12] = true, [113] = true, [101] = true, [424] = true }
 local notes = { [27863] = L["Inside the instance, must kill bosses to reach The Lich King"], [27864] = L["Anywhere in the city"], [27867] = L["Anywhere in the city"], [27870] = L["Anywhere in the zone"], [27873] = L["Inside the instance"], [27876] = L["Inside the instance"], [27878] = L["Inside the instance"], [27879] = L["Inside the instance"], [27959] = L["Anywhere in the zone"], [27964] = L["Neverest Pinnacle doesn't count"], [27967] = L["On the surface is OK"], [27977] = L["Inside the instance"], [27978] = L["Inside the instance"], [27869] = L["Anywhere in the city"] }
 
--- Using Spell IDs to bypass "Secret Index" protected name strings
 local cameraBuffs = {
 	[181765] = true, -- S.E.L.F.I.E. Camera
 	[181884] = true, -- S.E.L.F.I.E. Camera MkII
@@ -161,13 +160,12 @@ end
 
 function Addon:UPDATE_OVERRIDE_ACTIONBAR()
 	local inCamera = false
+	-- Logic: Filter by "HELPFUL" to skip "secret"/hidden buffs entirely
 	for i = 1, 40 do
-		local aura = C_UnitAuras.GetBuffDataByIndex("player", i)
+		local aura = C_UnitAuras.GetAuraDataByIndex("player", i, "HELPFUL")
 		if not aura then break end
 		
-		-- Logic: Check spellId to avoid protected name index errors
-		local spellId = aura.spellId
-		if spellId and cameraBuffs[spellId] then
+		if cameraBuffs[aura.spellId] then
 			inCamera = true
 			break
 		end
@@ -190,4 +188,4 @@ function Addon:CRITERIA_UPDATE()
 		end
 	end
 	HandyNotes:SendMessage("HandyNotes_NotifyUpdate", ACHIEVEMENT_NAME)
-end
+end  
