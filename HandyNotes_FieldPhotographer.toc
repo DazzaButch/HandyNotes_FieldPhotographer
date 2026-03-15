@@ -3,6 +3,7 @@
 
 ## Maintainer: Anlin@Lightbringer EU
 ## X-Website: https://github.com/DazzaButch/HandyNotes_FieldPhotographer
+## X-License: MIT
 
 ## Title: HandyNotes: Field Photographer
 ## Notes: Shows you where to take selfies for the achievement.
@@ -12,7 +13,6 @@
 
 ## Original Author: Phanx
 ## X-Email: addons@phanx.net
-## X-License: All rights reserved
 ## X-Website: https://github.com/Phanx/HandyNotes_FieldPhotographer
 ## X-Curse-Project-ID: 94664
 ## X-WoWI-ID: 23667
