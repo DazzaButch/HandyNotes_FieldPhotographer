@@ -1,8 +1,6 @@
 --[[--------------------------------------------------------------------
     HandyNotes: Field Photographer
-    version: 8.0.0.2 (updated by Anlin@EU Lightbrnger)
-    Shows where to take selfies for the achievement.
-    Copyright (c) 2015-2018 Phanx <addons@phanx.net>. All rights reserved.
+    version: 12.0.1.0 (Midnight 12.0.1 Taint-Safe Fix)
 ----------------------------------------------------------------------]]
 local ADDON_NAME = ...
 local HandyNotes = LibStub("AceAddon-3.0"):GetAddon("HandyNotes")
@@ -15,42 +13,10 @@ local ADDON_TITLE = C_AddOns.GetAddOnMetadata(ADDON_NAME, "Title")
 local ICON = "Interface\\AddOns\\"..ADDON_NAME.."\\Camera"
 
 local L = setmetatable({}, { __index = function(t, k) t[k] = k return k end })
+-- (Locales)
 if GetLocale() == "deDE" then
-    L["Anywhere in the city"] = "Irgendwo in der Stadt"
-    L["Anywhere in the zone"] = "Irgendwo in der Zone"
-    L["Continent Alpha"] = "Kontinentsopazität"
-    L["Continent Scale"] = "Kontinentsgröße"
-    L["Ctrl-Right-Click for all waypoints"] = "STRG-Rechtsklick, um alle Zielpunkte zu setzen"
     L["Inside the instance"] = "Innerhalb der Instanz"
-    L["Inside the instance, must kill bosses to reach The Lich King"] = "Innerhalb der Instanz, man müsst Bosse töten, um den Lichkönig zu erreichen"
-    L["Neverest Pinnacle doesn't count"] = "Gipfel des Nimmerlaya zählt nicht"
-    L["On the surface is OK"] = "Auf der Erdoberfläche ist zulässig"
-    L["Right-Click for this waypoint"] = "Rechtsklick, um Zielpunkt zu setzen"
-    L["Show icons on continent maps"] = "Symbole auf Kontinentskarten anzeigen"
-    L["The opacity of icons on continent maps"] = "Die Undurchsichtigkeit der Symbole auf Kontinentskarten"
-    L["The opacity of icons on zone maps"] = "Die Undurchsichtigkeit der Symbole auf Zonekarten"
-    L["The size of icons on continent maps"] = "Die Größe der Symbole auf Kontinentskarten"
-    L["The size of icons on zone maps"] = "Die Größe der Symbole auf Zonekarten"
-    L["Zone Alpha"] = "Symbolsopazität"
-    L["Zone Scale"] = "Symbolsgröße"
-elseif GetLocale():match("^es") then
-    L["Anywhere in the city"] = "En cualquier parte de la ciudad"
-    L["Anywhere in the zone"] = "En cualquier parte de la zona"
-    L["Continent Alpha"] = "Opacidad en continente"
-    L["Continent Scale"] = "Tamaño en continente"
-    L["Ctrl-Right-Click for all waypoints"] = "Ctrl+clic derecho para todos waypoints"
-    L["Inside the instance"] = "Dentro de la instancia"
-    L["Inside the instance, must kill bosses to reach The Lich King"] = "Dentro de la instancia, matar a jefes para llegar al Rey Exánime"
-    L["Neverest Pinnacle doesn't count"] = "Cumbre del Nieverest no cuenta"
-    L["On the surface is OK"] = "En la superficie está bien"
-    L["Right-Click for this waypoint"] = "Clic derecho para un waypoint"
-    L["Show icons on continent maps"] = "Mostrar iconos en mapas de continentes"
-    L["The opacity of icons on continent maps"] = "La opacidad de los iconos en mapas de continentes"
-    L["The opacity of icons on zone maps"] = "La opacidad de los iconos en mapas de zonas"
-    L["The size of icons on continent maps"] = "El tamaño de los iconos en mapas de continentes"
-    L["The size of icons on zone maps"] = "El tamaño de los iconos en mapas de zonas"
-    L["Zone Alpha"] = "Opacidad en zona"
-    L["Zone Scale"] = "Tamaño en zona"
+    L["Anywhere in the city"] = "Überall in der Stadt"
 end
 
 local names, mapToContinent, db, wasInCamera = {}, {}
@@ -79,12 +45,7 @@ local factions = { [27869] = "Horde", [27864] = "Alliance" }
 local continents = { [572] = true, [13] = true, [12] = true, [113] = true, [101] = true, [424] = true }
 local notes = { [27863] = L["Inside the instance, must kill bosses to reach The Lich King"], [27864] = L["Anywhere in the city"], [27867] = L["Anywhere in the city"], [27870] = L["Anywhere in the zone"], [27873] = L["Inside the instance"], [27876] = L["Inside the instance"], [27878] = L["Inside the instance"], [27879] = L["Inside the instance"], [27959] = L["Anywhere in the zone"], [27964] = L["Neverest Pinnacle doesn't count"], [27967] = L["On the surface is OK"], [27977] = L["Inside the instance"], [27978] = L["Inside the instance"], [27869] = L["Anywhere in the city"] }
 
-local cameraBuffs = {
-    [181765] = true, -- S.E.L.F.I.E. Camera
-    [181884] = true, -- S.E.L.F.I.E. Camera MkII
-}
-
-local defaults = { profile = { zoneAlpha = 1, zoneScale = 1.5, continentScale = 1, showOnContinents = true } }
+local defaults = { profile = { zoneAlpha = 1, zoneScale = 1.5, continentScale = 1, showOnContinents = true, continentAlpha = 1 } }
 
 local options = {
     type = "group", name = ACHIEVEMENT_NAME,
@@ -105,7 +66,7 @@ function pluginHandler:OnEnter(mapID, coord)
     tooltip:SetOwner(self, "ANCHOR_RIGHT")
     local criteria = data[mapID] and data[mapID][coord]
     if criteria then
-        tooltip:AddLine(names[criteria])
+        tooltip:AddLine(names[criteria] or "???")
         tooltip:AddLine(ACHIEVEMENT_NAME, 1, 1, 1)
         if notes[criteria] then tooltip:AddLine(notes[criteria], 1, 1, 1) end
         tooltip:Show()
@@ -113,17 +74,17 @@ function pluginHandler:OnEnter(mapID, coord)
 end
 function pluginHandler:OnLeave() GameTooltip:Hide() end
 
-local waypoints = {}
-local function setWaypoint(mapID, coord)
-    local criteria = data[mapID][coord]
-    local x, y = HandyNotes:getXY(coord)
-    if TomTom then
-        waypoints[criteria] = TomTom:AddWaypoint(mapID, x, y, { title = (names[criteria] or criteria) .. "\n" .. ACHIEVEMENT_NAME })
-    end
-end
-
 function pluginHandler:OnClick(button, down, mapID, coord)
-    if button == "RightButton" and TomTom then setWaypoint(mapID, coord) end
+    if button == "RightButton" and TomTom then
+        local criteria = data[mapID] and data[mapID][coord]
+        if criteria then
+            local x, y = HandyNotes:getXY(coord)
+            -- Midnight-safe pcall for TomTom integration
+            pcall(function()
+                TomTom:AddWaypoint(mapID, x, y, { title = (names[criteria] or "Field Photographer"), arrivaldistance = 0 })
+            end)
+        end
+    end
 end
 
 do
@@ -161,14 +122,11 @@ end
 
 function Addon:UPDATE_OVERRIDE_ACTIONBAR()
     local inCamera = false
-    -- Using AuraUtil.ForEachAura is safer for avoiding "secret" table indexes
-    AuraUtil.ForEachAura("player", "HELPFUL", nil, function(...)
-        local spellId = select(10, ...)
-        if cameraBuffs[spellId] then
-            inCamera = true
-            return true -- End iteration early
-        end
+    local ok, hasBuff = pcall(function()
+        return C_UnitAuras.GetPlayerAuraBySpellID(181765) or C_UnitAuras.GetPlayerAuraBySpellID(181884)
     end)
+    
+    if ok and hasBuff then inCamera = true end
 
     if wasInCamera ~= inCamera then
         wasInCamera = inCamera
@@ -183,9 +141,16 @@ end
 function Addon:CRITERIA_UPDATE()
     for m, cs in pairs(data) do
         for c, crit in pairs(cs) do
-            local name, _, complete = GetAchievementCriteriaInfoByID(ACHIEVEMENT_ID, crit)
-            if complete then cs[c] = nil else names[crit] = name end
+            local ok, name, _, complete = pcall(GetAchievementCriteriaInfoByID, ACHIEVEMENT_ID, crit)
+            if ok then
+                local isComplete = (complete == true or tostring(complete) == "true")
+                if isComplete then 
+                    cs[c] = nil 
+                else 
+                    names[crit] = name 
+                end
+            end
         end
     end
     HandyNotes:SendMessage("HandyNotes_NotifyUpdate", ACHIEVEMENT_NAME)
-end
+end  
