@@ -18,7 +18,7 @@
 ## X-WoWI-ID: 23667
 
 ## Dependencies: HandyNotes
-## OptionalDependencies: TomTom
+## OptionalDeps: TomTom
 ## DefaultState: enabled
 ## SavedVariables: HNFieldPhotographerDB
 ## X-Category: Map & Minimap
