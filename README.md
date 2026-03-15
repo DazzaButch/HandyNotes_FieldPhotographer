@@ -18,9 +18,15 @@ An updated, high-performance, and **taint-safe** version of the classic Field Ph
 3. Restart the game or type `/reload`.
 
 ## Configuration
-Settings can be found under:
-**Interface > AddOns > HandyNotes > Plugins > Field Photographer**
-Or via the standard HandyNotes options. You can adjust icon scale and transparency there.
+This addon is a plugin for HandyNotes. You can find the settings here:
+1. Open the game **Options** (Esc).
+2. Navigate to the **AddOns** tab.
+3. Select **HandyNotes** -> **Plugins** -> **Field Photographer**.
+
+From there, you can adjust:
+- **Icon Scale:** Make the camera icons larger or smaller.
+- **Alpha:** Adjust how see-through the icons are.
+- **Show on Continents:** Toggle whether icons show on the world map or just zone maps.
 
 ## Credits
 - **Original Author:** Phanx
