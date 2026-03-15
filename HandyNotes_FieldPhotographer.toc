@@ -1,5 +1,8 @@
-## Interface: 120001
-## Version: 8.0.0.2
+## Interface: 110007, 120000
+## Version: 12.0.1.0  
+
+## Maintainer: Anlin@Lightbringer EU
+## X-Website: https://github.com/DazzaButch/HandyNotes_FieldPhotographer
 
 ## Title: HandyNotes: Field Photographer
 ## Notes: Shows you where to take selfies for the achievement.
@@ -7,7 +10,7 @@
 ## Notes-esES: Mostrar donde para sacar fotos para el logro.
 ## Notes-esMX: Mostrar donde para sacar fotos para el logro.
 
-## Author: Phanx (Fixed by Anlin@EU-Lightbringer)
+## Original Author: Phanx
 ## X-Email: addons@phanx.net
 ## X-License: All rights reserved
 ## X-Website: https://github.com/Phanx/HandyNotes_FieldPhotographer
@@ -15,8 +18,9 @@
 ## X-WoWI-ID: 23667
 
 ## Dependencies: HandyNotes
-## OptionalDeps: TomTom
-## SavedVariables: HNFieldPhotographerDB
+## OptionalDependencies: TomTom
 ## DefaultState: enabled
+## SavedVariables: HNFieldPhotographerDB
+## X-Category: Map & Minimap
 
 Addon.lua
